@@ -1,5 +1,5 @@
 import random
-from genes import ColorGene, OpacityGene, PositionGene
+from .genes import ColorGene, OpacityGene, PositionGene
 
 class Triangle:
     def __init__(self, vertexes, color):
