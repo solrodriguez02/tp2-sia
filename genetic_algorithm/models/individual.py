@@ -55,5 +55,5 @@ class Canvas:
 
     def update_triangle_from_gene(self, gene, gene_position):
         # considering each triangle has 7 genes
-        triangle_index = gene_position / 7
+        triangle_index = int(gene_position / 7)
         self.triangles[triangle_index].update_from_gene(gene)
