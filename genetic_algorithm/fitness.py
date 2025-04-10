@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
-from utils.generate_canvas import canvas_to_image
+from genetic_algorithm.utils.generate_canvas import canvas_to_image
 
 class FitnessFunction:
     def __init__(self, target_image):

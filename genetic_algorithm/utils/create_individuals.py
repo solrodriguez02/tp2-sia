@@ -1,5 +1,5 @@
 import random
-from models.individual import Triangle, Canvas
+from genetic_algorithm.models.individual import Triangle, Canvas
 
 def create_individuals(num_individuals, num_triangles, width=500, height=500):
     

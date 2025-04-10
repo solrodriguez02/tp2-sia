@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw
-from utils.create_individuals import create_individuals
+from genetic_algorithm.utils.create_individuals import create_individuals
 
 def canvas_to_image(canvas, width=500, height=500):
     image = Image.new('RGBA', (width, height), (255, 255, 255, 255))

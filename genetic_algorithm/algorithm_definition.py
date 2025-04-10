@@ -1,5 +1,5 @@
-from utils.create_individuals import create_individuals
-from selection_algorithms.elite_selection import EliteSelection
+from genetic_algorithm.utils.create_individuals import create_individuals
+from genetic_algorithm.selection_algorithms.elite_selection import EliteSelection
 from genetic_algorithm.crossover import Crossover
 from genetic_algorithm.mutation import Mutation
 from genetic_algorithm.next_generation import NextGenerationSelection
