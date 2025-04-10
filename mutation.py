@@ -8,8 +8,10 @@ class Mutation:
         for individual in new_generation:
             change_probability = random.random()
             if change_probability < self.mutation_probability:
-                random_gen = random.randint(0, len(individual.chromesome)-1)
-                individual.chromesome[random_gen].mutate()
+                random_gene_index = random.randint(0, len(individual.chromesome)-1)
+                selected_gene = individual.chromesome[random_gene_index]
+                selected_gene.mutate()
+                individual.update_triangle_from_gene(selected_gene, random_gene_index)
 
     def mutateMultiplenGenes(self, new_generation, M):
         if M > 7 or M < 1:
@@ -20,5 +22,7 @@ class Mutation:
             change_probability = random.random()
             if change_probability < self.mutation_probability:
                 for i in genes_mutated:
-                    random_gen = random.randint(0, len(individual.chromesome)-1)
-                    individual.chromesome[random_gen].mutate()
+                    random_gene_index = random.randint(0, len(individual.chromesome)-1)
+                    selected_gene = individual.chromesome[random_gene_index]
+                    selected_gene.mutate()
+                    individual.update_triangle_from_gene(selected_gene, random_gene_index)
