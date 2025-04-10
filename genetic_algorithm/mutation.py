@@ -8,8 +8,8 @@ class Mutation:
         for individual in new_generation:
             change_probability = random.random()
             if change_probability < self.mutation_probability:
-                random_gene_index = random.randint(0, len(individual.chromesome)-1)
-                selected_gene = individual.chromesome[random_gene_index]
+                random_gene_index = random.randint(0, len(individual.chromosome)-1)
+                selected_gene = individual.chromosome[random_gene_index]
                 selected_gene.mutate()
                 individual.update_triangle_from_gene(selected_gene, random_gene_index)
 
@@ -22,7 +22,7 @@ class Mutation:
             change_probability = random.random()
             if change_probability < self.mutation_probability:
                 for i in genes_mutated:
-                    random_gene_index = random.randint(0, len(individual.chromesome)-1)
-                    selected_gene = individual.chromesome[random_gene_index]
+                    random_gene_index = random.randint(0, len(individual.chromosome)-1)
+                    selected_gene = individual.chromosome[random_gene_index]
                     selected_gene.mutate()
                     individual.update_triangle_from_gene(selected_gene, random_gene_index)

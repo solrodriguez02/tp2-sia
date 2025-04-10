@@ -32,6 +32,7 @@ class GeneticAlgorithm:
 
         #pass as parameter 
         while self.max_fitness < 0.9 and self.generation_number < self.rounds:
+            print(f"Generation: {self.generation_number}, Max fitness: {self.max_fitness}")
             # select all parents for this generation
             new_parents = selection_method.select(self.current_generation, self.fitness_function)
 
