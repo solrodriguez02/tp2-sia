@@ -31,7 +31,7 @@ class GeneticAlgorithm:
         mutation_method = Mutation(mutation_probability)
 
         #pass as parameter 
-        while self.max_fitness < 0.8 and self.generation_number < self.rounds:
+        while self.max_fitness < 0.9 and self.generation_number < self.rounds:
             # select all parents for this generation
             new_parents = selection_method.select(self.current_generation, self.fitness_function)
 
