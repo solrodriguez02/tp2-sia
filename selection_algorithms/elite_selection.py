@@ -7,7 +7,7 @@ class EliteSelection:
     def select(self, population, fitness_function):
         fitness_priority_queue = []
         for individual in population:
-            hp.heappush(fitness_priority_queue, (fitness_function(individual), individual))
+            hp.heappush(fitness_priority_queue, (-fitness_function(individual), individual))
         
         original_queue = fitness_priority_queue.copy()
         best_individuals = []

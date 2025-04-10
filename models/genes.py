@@ -13,9 +13,6 @@ class Gene:
         self.min = min
         self.max = max
         self.is_float = is_float
-    
-    def __lt__(self, other):
-        other.value < self.value
 
     def mutate(self):
         self.value = random.randint(min, max)
