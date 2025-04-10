@@ -1,4 +1,5 @@
 from random import uniform
+from itertools import accumulate
 
 class UniversalSelection:
 
@@ -14,11 +15,7 @@ class UniversalSelection:
         sum_fitness = sum(rel_fitness)
         rel_fitness = [x / sum_fitness for x in rel_fitness]
 
-        q = []
-        cumulative_sum = 0
-        for fitness in rel_fitness:
-            cumulative_sum += fitness
-            q.append(cumulative_sum) 
+        q = list(accumulate(rel_fitness))
 
         selected_individuals = []
 
