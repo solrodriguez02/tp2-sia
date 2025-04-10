@@ -1,5 +1,5 @@
 import random
-
+from genetic_algorithm.models.individual import Canvas
 
 
 class Crossover:
@@ -20,9 +20,27 @@ class Crossover:
             #while chromosome_index < len(first_individual.chromosome):
                 #first_parent = first_individual.chromosome[chromosome_index]
                 #second_parent = second_individual.chromosome[chromosome_index]
+            
 
-            first_child = first_individual.chromosome[0:cross_point] + second_individual.chromosome[cross_point:]
-            second_child = second_individual.chromosome[0:cross_point] + first_individual.chromosome[cross_point:]
+            first_child_genes= first_individual.chromosome[0:cross_point] + second_individual.chromosome[cross_point:]
+            second_child_genes = second_individual.chromosome[0:cross_point] + first_individual.chromosome[cross_point:]
+
+            #change to a function to not repeat the code
+            # basically is to apply changes based on chromosomes
+            # build_from_chromosomes
+            first_child = Canvas()
+            for triangle in first_individual.triangles:
+                first_child.add_triangle(triangle)
+            
+            for gene_index in range(len(first_child_genes)):
+                first_child.update_triangle_from_gene(first_child_genes[gene_index], gene_index)
+
+            second_child = Canvas()
+            for triangle in second_individual.triangles:
+                second_child.add_triangle(triangle)
+            
+            for gene_index in range(len(second_child_genes)):
+                second_child.update_triangle_from_gene(second_child_genes[gene_index], gene_index)
 
             childs.append(first_child)
             childs.append(second_child)
