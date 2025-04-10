@@ -17,19 +17,15 @@ class Crossover:
             if len(first_individual.triangles) != len(second_individual.triangles):
                 raise ValueError("individuals must have the same number of triangles")
             
-            chromosome_index = 0
-            
-            while chromosome_index < len(first_individual.chromosome):
-                first_parent = first_individual.chromosome[chromosome_index]
-                second_parent = second_individual.chromosome[chromosome_index]
+            #while chromosome_index < len(first_individual.chromosome):
+                #first_parent = first_individual.chromosome[chromosome_index]
+                #second_parent = second_individual.chromosome[chromosome_index]
 
-                first_child = first_parent[0:cross_point] + second_parent[cross_point:]
-                second_child = second_parent[0:cross_point] + first_parent[cross_point:]
+            first_child = first_individual.chromosome[0:cross_point] + second_individual.chromosome[cross_point:]
+            second_child = second_individual.chromosome[0:cross_point] + first_individual.chromosome[cross_point:]
 
-                childs.append(first_child)
-                childs.append(second_child)
-
-                chromosome_index += 1
+            childs.append(first_child)
+            childs.append(second_child)
         
             index += 2
 
