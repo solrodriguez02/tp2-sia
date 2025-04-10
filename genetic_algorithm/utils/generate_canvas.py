@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw
-from create_individuals import create_individuals
+from utils.create_individuals import create_individuals
 
 def canvas_to_image(canvas, width=500, height=500):
     image = Image.new('RGBA', (width, height), (255, 255, 255, 255))

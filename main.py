@@ -1,6 +1,6 @@
-from genetic_algorithm import GeneticAlgorithm
-from generate_canvas import canvas_to_image
-from fitness import FitnessFunction
+from genetic_algorithm.algorithm_definition import GeneticAlgorithm
+from genetic_algorithm.utils.generate_canvas import canvas_to_image
+from genetic_algorithm.fitness import FitnessFunction
 import cv2
 
 if __name__ == "__main__":

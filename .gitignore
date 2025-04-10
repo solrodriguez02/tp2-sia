@@ -1,1 +1,4 @@
 __pycache__
+genetic_algorithm/__pycache__
+genetic_algorithm/models/__pycache__
+genetic_algorithm/selection_algorithms/__pycache__

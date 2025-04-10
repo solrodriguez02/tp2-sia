@@ -1,8 +1,8 @@
-from create_individuals import create_individuals
+from utils.create_individuals import create_individuals
 from selection_algorithms.elite_selection import EliteSelection
-from crossover import Crossover
-from mutation import Mutation
-from next_generation import NextGenerationSelection
+from genetic_algorithm.crossover import Crossover
+from genetic_algorithm.mutation import Mutation
+from genetic_algorithm.next_generation import NextGenerationSelection
 import random
 
 class GeneticAlgorithm:

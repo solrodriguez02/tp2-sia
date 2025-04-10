@@ -1,4 +1,5 @@
 from selection_algorithms.elite_selection import EliteSelection
+
 class NextGenerationSelection:
     def __init__(self, current_generation, children):
         self.current_generation = current_generation
