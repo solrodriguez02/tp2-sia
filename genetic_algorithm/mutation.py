@@ -1,8 +1,9 @@
 import random
 
 class Mutation:
-    def __init__(self, mutation_probability):
+    def __init__(self, mutation_probability, triangles_per_solution):
         self.mutation_probability = mutation_probability
+        self.triangles_per_solution = triangles_per_solution
 
     def mutateSingleGen(self, new_generation):
         for individual in new_generation:
@@ -13,9 +14,8 @@ class Mutation:
                 selected_gene.mutate()
                 individual.update_triangle_from_gene(selected_gene, random_gene_index)
 
-    def mutateMultiplenGenes(self, new_generation, M):
-        if M > 7 or M < 1:
-            raise ValueError("invalid M")
+    def mutateMultiplenGenes(self, new_generation):
+        M = self.triangles_per_solution*7
 
         for individual in new_generation:
             genes_mutated = random.randint(1, M)
