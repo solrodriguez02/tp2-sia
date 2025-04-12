@@ -1,12 +1,15 @@
 import random
-from genetic_algorithm.models.individual import Canvas
+from genetic_algorithm.models.individual import Canvas, Triangle
 
 
-class Crossover:
+class Crossover():
+
+    def __init__(self, triangles_amount):
+        self.triangles_amount = triangles_amount
 
     def one_point_crossover(self,new_generation):
         childs = []
-        cross_point = random.randint(0, 7 - 1)
+        cross_point = random.randint(0, 7*self.triangles_amount - 7)
         index = 0
         individuals = len(new_generation)
         while index < individuals - 1:
@@ -54,6 +57,8 @@ class Crossover:
         childs = []
         index = 0
         individuals = len(new_generation)
+        change_genes_probability = 0.5
+
         while index < individuals - 1:
         
             first_individual = new_generation[index]
@@ -64,29 +69,44 @@ class Crossover:
             
             chromosome_index = 0
             
+            first_child = []
+            second_child = []
+            
             while chromosome_index < len(first_individual.chromosome):
                 first_parent = first_individual.chromosome[chromosome_index]
                 second_parent = second_individual.chromosome[chromosome_index]
 
-                first_child = []
-                second_child = []
-
-                change_genes_probability = 0.5
-
-                for i in range(len(first_parent)):
-                    if random.random() > change_genes_probability:
-                        first_child.append(first_parent[i])
-                        second_child.append(second_parent[i])
-                    else:
-                        first_child.append(second_parent[i])
-                        second_child.append(first_parent[i])
-
-                childs.append(first_child)
-                childs.append(second_child)
+                if random.random() > change_genes_probability:
+                    first_child.append(first_parent)
+                    second_child.append(second_parent)
+                else:
+                    first_child.append(second_parent)
+                    second_child.append(first_parent)
 
                 chromosome_index += 1
+
+            childs.append(build_canvas_from_genes(first_child))
+            childs.append(build_canvas_from_genes(second_child))
         
             index += 2
 
         return childs
     
+
+    
+def build_canvas_from_genes(chromosoma):
+    canvas = Canvas()
+    index = 0
+    while index < len(chromosoma):
+        # reconstruir color y vértices desde los genes
+        r = chromosoma[index].value
+        g = chromosoma[index+1].value
+        b = chromosoma[index+2].value
+        a = chromosoma[index+3].value
+        vertex1 = chromosoma[index+4].value
+        vertex2 = chromosoma[index+5].value
+        vertex3 = chromosoma[index+6].value
+        triangle = Triangle([vertex1, vertex2, vertex3], (r, g, b, a))
+        canvas.add_triangle(triangle)
+        index += 7
+    return canvas

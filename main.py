@@ -13,11 +13,10 @@ if __name__ == "__main__":
     triangles_per_solution = 10
     recombination_probability = 1.0
     mutation_probability = 1.0
-    seed = 100
 
     fitness_function = FitnessFunction(target_image).fitness_avg_pixel_difference
     genetic_algorithm = GeneticAlgorithm(fitness_function, target_image, initial_population_size)
-    best_individual, fitness_value, generation = genetic_algorithm.run(triangles_per_solution, recombination_probability, mutation_probability, seed)
+    best_individual, fitness_value, generation = genetic_algorithm.run(triangles_per_solution, recombination_probability, mutation_probability)
 
     answer_image = canvas_to_image(best_individual)
     answer_image.save("output_image.png")

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
-from genetic_algorithm.utils.generate_canvas import canvas_to_image
+from .utils.generate_canvas import canvas_to_image
 
 class FitnessFunction:
     def __init__(self, target_image):
@@ -18,8 +18,13 @@ class FitnessFunction:
         imageB = cv2.resize(imageB, (self.target_image.shape[1], imageA.shape[0]))
         diff = cv2.absdiff(imageA, imageB) # Calcula la diferencia absoluta por píxel
         diff_mean = np.mean(diff) 
-        simil_percent = 1 - (diff_mean / 255)
-        return simil_percent 
+        # Similitud lineal
+        raw_similarity = 1 - (diff_mean / 255)
+
+        # Penalización no lineal (castiga más las diferencias)
+        penalized_similarity = raw_similarity ** 2
+
+        return penalized_similarity
 
     # Calcula el error cuadrático medio (MSE: Mean Squared Error) entre las dos imágenes
     # Toma la diferencia de cada píxel, la eleva al cuadrado, y promedia todo

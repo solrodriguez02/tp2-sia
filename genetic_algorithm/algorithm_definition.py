@@ -6,7 +6,7 @@ from genetic_algorithm.next_generation import NextGenerationSelection
 import random
 
 class GeneticAlgorithm:
-    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=100):
+    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=300):
         self.current_generation = [] 
         self.initial_population_size = initial_population_size
         self.best_individual = None
@@ -16,17 +16,16 @@ class GeneticAlgorithm:
         self.generation_number = 0
         self.target_image = target_image
 
-    def run(self, triangles_per_solution = 10, recombination_probability=1.0, mutation_probability=0.0, seed=100):
+    def run(self, triangles_per_solution = 10, recombination_probability=1.0, mutation_probability=0.0):
         # generate initial population
         self.current_generation = create_individuals(self.initial_population_size, triangles_per_solution)
         
-        random_generator = random.seed(seed)
         selection_method = EliteSelection(10)
         # set number of parents based on a percentage 
         #selection_method = EliteSelection(Math.floor(0.1 * self.initial_population_size)) 
         #or
         #selection_method = EliteSelection(Math.floor(0.1 * len(self.current_generation)))         
-        crossover_method = Crossover()
+        crossover_method = Crossover(triangles_per_solution)
         #asumming a mutation probability of 1.0
         mutation_method = Mutation(mutation_probability)
 
@@ -38,7 +37,7 @@ class GeneticAlgorithm:
 
 
             # asumme a recombination probability of 1.0
-            children = crossover_method.one_point_crossover(new_parents)
+            children = crossover_method.uniform_crossover(new_parents)
 
             # code for stochasticity
             #children = []
