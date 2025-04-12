@@ -14,7 +14,7 @@ class Crossover():
         index = 0
         generation_shuffled = new_generation.copy()
         random.shuffle(generation_shuffled)
-        while index < len(new_generation):
+        while index < len(new_generation) - 1:
             p1 = generation_shuffled[index]
             p2 = generation_shuffled[index + 1]
 
