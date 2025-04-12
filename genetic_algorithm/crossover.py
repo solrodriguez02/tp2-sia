@@ -9,12 +9,14 @@ class Crossover():
 
     def one_point_crossover(self, new_generation):
         childs = []
-        cross_point = random.randint(1, self.triangles_amount - 1) * 7
+        #cross_point = random.randint(1, self.triangles_amount - 1) * 7
+        cross_point = random.randint(0, len(new_generation[0].chromosome) - 1)
         index = 0
-
+        generation_shuffled = new_generation.copy()
+        random.shuffle(generation_shuffled)
         while index < len(new_generation):
-            p1 = new_generation[index]
-            p2 = new_generation[index + 1]
+            p1 = generation_shuffled[index]
+            p2 = generation_shuffled[index + 1]
 
             if len(p1.chromosome) != len(p2.chromosome):
                 raise ValueError("Los individuos deben tener la misma cantidad de genes")
