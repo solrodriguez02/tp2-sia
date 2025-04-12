@@ -10,11 +10,9 @@ class FitnessFunction:
     # Devuelve el promedio de esas diferencias 
     def fitness_avg_pixel_difference(self, individual):
         imageA = self.target_image
-        imageB = canvas_to_image(individual)
-        imageB = np.array(imageB)
-        if imageB.shape[2] == 4:
-        # dropping the alpha channel
-            imageB = imageB[:, :, :3]
+        imageB_pill = canvas_to_image(individual)
+        imageB_np = np.array(imageB_pill)
+        imageB = cv2.cvtColor(imageB_np, cv2.COLOR_RGB2BGR)
         imageB = cv2.resize(imageB, (self.target_image.shape[1], imageA.shape[0]))
         diff = cv2.absdiff(imageA, imageB) # Calcula la diferencia absoluta por píxel
         diff_mean = np.mean(diff) 

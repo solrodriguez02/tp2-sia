@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw
-from genetic_algorithm.utils.create_individuals import create_individuals
+from .create_individuals import create_individuals
 
 def canvas_to_image(canvas, width=500, height=500):
     image = Image.new('RGBA', (width, height), (255, 255, 255, 255))
@@ -14,8 +14,9 @@ def canvas_to_image(canvas, width=500, height=500):
 
         draw.polygon(vertexes, fill=(r, g, b, alpha))   # dibujo el triángulo en el template
         image = Image.alpha_composite(image, triangle_temp)  # superpongo el triángulo al canvas
-
-    return image
+    
+    image_rgb = image.convert('RGB')
+    return image_rgb
 
 
 if __name__ == "__main__":
