@@ -1,6 +1,9 @@
 import random
 from genetic_algorithm.models.individual import Triangle, Canvas
 
+random_generator = random.Random()
+random_generator.seed(43)
+
 def create_individuals(num_individuals, num_triangles, width=500, height=500):
     
     individuals = []
@@ -11,7 +14,7 @@ def create_individuals(num_individuals, num_triangles, width=500, height=500):
         for _ in range(num_triangles):
             # Genero el triángulo con 3 vértices random y un color random
             vertexes = generate_vertexes(width, height)
-            color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), random.uniform(0, 1))
+            color = (random_generator.randint(0, 255), random_generator.randint(0, 255), random_generator.randint(0, 255), random_generator.uniform(0, 1))
 
             triangle = Triangle(vertexes, color)
             individual.add_triangle(triangle)
@@ -23,15 +26,15 @@ def create_individuals(num_individuals, num_triangles, width=500, height=500):
 
 def generate_vertexes(width, height):
    # Genero el primer vértice random
-    cx = random.randint(0, width - 1)
-    cy = random.randint(0, height - 1)
+    cx = random_generator.randint(0, width - 1)
+    cy = random_generator.randint(0, height - 1)
 
     vertexes = [(cx, cy)]
 
     # Para los dos vertices restantes, elijo un desplazamiento aleatorio (a partir del primer vértice) 
     for _ in range(2):
-        x = cx + random.randint(-width, width)
-        y = cy + random.randint(-height, height)
+        x = cx + random_generator.randint(-width, width)
+        y = cy + random_generator.randint(-height, height)
 
         # Si el vértice se sale del canvas, lo ajusto a los límites
         x = max(0, min(width - 1, x))

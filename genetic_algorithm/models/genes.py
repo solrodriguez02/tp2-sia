@@ -1,4 +1,8 @@
 import random
+
+random_generator = random.Random()
+random_generator.seed(43)
+
 class Gene:
     def __init__(self, name, value, min_val, max_val, is_float = False):
         if isinstance(value, int):
@@ -15,7 +19,7 @@ class Gene:
         self.is_float = is_float
 
     def mutate(self):
-        self.value = random.randint(self.min_val, self.max_val)
+        self.value = random_generator.randint(self.min_val, self.max_val)
 
 class ColorGene(Gene):
     def __init__(self, name, value):
@@ -26,11 +30,11 @@ class OpacityGene(Gene):
         super().__init__("opacity", value, 0, 1, True)
 
     def mutate(self):
-        self.value = random.random()
+        self.value = random_generator.random()
 
 class PositionGene(Gene):
     def __init__(self, name, value, max_val):
         super().__init__(name, value, (0,0), max_val)
 
     def mutate(self):
-        self.value = (random.randint(self.min_val[0], self.max_val[0]), random.randint(self.min_val[0], self.max_val[1]))
+        self.value = (random_generator.randint(self.min_val[0], self.max_val[0]), random_generator.randint(self.min_val[0], self.max_val[1]))

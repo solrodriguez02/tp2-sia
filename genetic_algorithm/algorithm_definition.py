@@ -3,9 +3,10 @@ from genetic_algorithm.selection_algorithms.elite_selection import EliteSelectio
 from genetic_algorithm.crossover import Crossover
 from genetic_algorithm.mutation import Mutation
 from genetic_algorithm.next_generation import NextGenerationSelection
-import random
+from genetic_algorithm.utils.create_individuals import random_generator
 import numpy as np
 from .utils.write_data import create_csv
+
 class GeneticAlgorithm:
     def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25):
         self.current_generation = [] 

@@ -1,4 +1,4 @@
-import random
+from genetic_algorithm.utils.create_individuals import random_generator
 
 class RankingSelection:
     def __init__(self, size):
@@ -22,7 +22,7 @@ class RankingSelection:
         selected_individuals = []
 
         for _ in range(self.size):
-            r = random.random()
+            r = random_generator.random()
             selected = False
             for i in range(len(population)):
                 if accum_aptitude_values[i] > r:

@@ -1,4 +1,3 @@
-import random
 from .genes import ColorGene, OpacityGene, PositionGene
 
 class Triangle:
