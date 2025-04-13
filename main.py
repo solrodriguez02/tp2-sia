@@ -3,8 +3,12 @@ from genetic_algorithm.utils.generate_canvas import canvas_to_image
 from genetic_algorithm.fitness import FitnessFunction
 import cv2
 import json
+import os
 
 if __name__ == "__main__":
+
+    if not os.path.exists("outputs"):
+        os.makedirs("outputs")
 
     with open("config.json", 'r') as config_file:
         config = json.load(config_file)
@@ -16,6 +20,9 @@ if __name__ == "__main__":
         rounds = config.get("rounds")
 
     for image in target_image_path:
+        img_name = image.split('.')[1]
+        img_name = img_name.split('/')[2]
+
         for pop_size in initial_population_size:
             for triangles in triangles_per_solution:
                 for recombination in recombination_probability:
@@ -26,5 +33,6 @@ if __name__ == "__main__":
                             genetic_algorithm = GeneticAlgorithm(fitness_function, target_image, pop_size, r)
                             best_individual, fitness_value, generation = genetic_algorithm.run(triangles, recombination, mutation)
                             answer_image = canvas_to_image(best_individual)
-                            answer_image.save(f"output_image_r{r}.png")
+                            answer_image.save(f"outputs/{img_name}_p{pop_size}_t{triangles}_rec{recombination}_mut{mutation}_r{r}.png")
                             print(f"The best result was found on generation {generation} with a fitness value of: {fitness_value}")
+
