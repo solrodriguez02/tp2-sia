@@ -37,10 +37,13 @@ class Crossover():
         individuals = len(new_generation)
         change_genes_probability = 0.5
 
+        generation_shuffled = new_generation.copy()
+        random_generator.shuffle(generation_shuffled)
+
         while index < individuals - 1:
         
-            first_individual = new_generation[index]
-            second_individual = new_generation[index + 1]
+            first_individual = generation_shuffled[index]
+            second_individual = generation_shuffled[index + 1]
 
             if len(first_individual.triangles) != len(second_individual.triangles):
                 raise ValueError("individuals must have the same number of triangles")
