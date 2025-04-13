@@ -1,4 +1,4 @@
-from random import uniform
+from genetic_algorithm.utils.create_individuals import random_generator
 from itertools import accumulate
 
 class UniversalSelection:
@@ -20,7 +20,7 @@ class UniversalSelection:
         selected_individuals = []
 
         for j in range(self.size):
-            r = uniform(0, 1)
+            r = random_generator.uniform(0, 1)
             r_j = (r + j) / self.size
             for i, qi in enumerate(q):
                 q_prev = q[i - 1] if i > 0 else 0

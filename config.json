@@ -1,0 +1,8 @@
+{
+    "target_image_path": [ "./images/bandera.jpg" ],
+    "initial_population_size": [ 50 ],
+    "triangles_per_solution": [ 10 ],
+    "recombination_probability": [ 1.0 ],
+    "mutation_probability": [ 1.0 ],
+    "rounds": [ 50, 100, 200, 300, 360 ]
+}

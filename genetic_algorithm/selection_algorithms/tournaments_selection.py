@@ -1,4 +1,4 @@
-import random
+from genetic_algorithm.utils.create_individuals import random_generator
 
 class TournamentSelection:
     #providing the fitness fuction gives a higher value if the individual is similar to the target image
@@ -14,7 +14,7 @@ class TournamentSelection:
             best_individual = population[0]
             best_score = -1
             for i in range(self.M):
-                random_individual = population[random.randint(0,len(population)-1)]
+                random_individual = population[random_generator.randint(0,len(population)-1)]
                 current_score = fitness_function(random_individual)
                 if current_score > best_score:
                     best_score = current_score
@@ -29,8 +29,8 @@ class TournamentSelection:
             best_individual = population[0]
             worse_individual = population[0]
 
-            first_individual = population[random.randint(0, len(population)-1)]
-            second_individual = population[random.randint(0, len(population)-1)]
+            first_individual = population[random_generator.randint(0, len(population)-1)]
+            second_individual = population[random_generator.randint(0, len(population)-1)]
 
             if (self.fitness_function(first_individual) > fitness_function(second_individual)):
                 best_individual = first_individual
@@ -38,7 +38,7 @@ class TournamentSelection:
             else:
                 best_individual = second_individual
                 worse_individual = first_individual
-            r = random.random()
+            r = random_generator.random()
             if (r < self.threshold):
                 best_individuals.add(best_individual)
             else:

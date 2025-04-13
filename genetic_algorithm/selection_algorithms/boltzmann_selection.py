@@ -1,5 +1,5 @@
 from math import exp
-from random import uniform
+from genetic_algorithm.utils.create_individuals import random_generator
 from itertools import accumulate
 
 class BoltzmannSelection:
@@ -19,7 +19,7 @@ class BoltzmannSelection:
         selected_individuals = []
 
         for _ in range(self.size):
-            r = uniform(0, 1)
+            r = random_generator.uniform(0, 1)
             for i, qi in enumerate(q):
                 q_prev = q[i - 1] if i > 0 else 0
                 if q_prev <= r < qi:
