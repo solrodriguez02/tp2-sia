@@ -3,6 +3,10 @@
     "initial_population_size": [ 50 ],
     "triangles_per_solution": [ 10 ],
     "recombination_probability": [ 1.0 ],
+    "mutations": [ "single", "multi" ],
+    "mutation_probability": [ 0.25, 0.5, 0.75, 1.0 ],
+    "rounds": [ 300 ],
     "mutation_probability": [ 1.0 ],
-    "rounds": [ 50, 100, 200, 300, 400 ]
+    "rounds": [ 300 ],
+    "parents_selection_percentage": [ 0.25, 0.5, 0.75, 1.0]
 }

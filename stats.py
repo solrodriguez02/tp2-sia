@@ -1,4 +1,6 @@
-from matplotlib import pyplot as plt
+import matplotlib 
+matplotlib.use('Agg')  # Use the 'Agg' backend which doesn't require Qt
+import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import numpy as np
@@ -110,6 +112,36 @@ def crossover_variation():
     plt.ylim(bottom=0.55)
     plt.show()
 
+def mutation_vs_fitness(mutation):
+    # mutation: single / multi
+    df_single = df[(df['variation'] == 'MUTATION') & (df['mutation'] == mutation)].copy()
+
+    df_single['generaciones'] = df_single['generaciones'].astype(int)
+    df_single['mean_fitness_value'] = df_single['mean_fitness_value'].astype(float)
+    df_single['std_dev_fitness_value'] = df_single['std_dev_fitness_value'].astype(float)
+    df_single['probability_mutation'] = df_single['probability_mutation'].astype(float)
+
+    df_single = df_single.groupby('probability_mutation')
+
+    plt.figure(figsize=(10, 6))
+
+    for prob, group in df_single:
+        plt.plot(group['mean_fitness_value'].reset_index(drop=True), label=f'{prob} mutación')
+        plt.fill_between(group.index - group.index.min(), 
+                 group['mean_fitness_value'] - group['std_dev_fitness_value'],
+                 group['mean_fitness_value'] + group['std_dev_fitness_value'], alpha=0.2)
+        
+    plt.xlabel('Generaciones')
+    plt.ylabel('Fitness')
+    if mutation == 'single':
+        plt.title('Evolucion del Fitness vs Generaciones variando la probabilidad de mutación (Un solo gen)')
+    else:
+        plt.title('Evolucion del Fitness vs Generaciones variando la probabilidad de mutación (Multiples genes)')
+
+    plt.xticks(rotation=90)
+    plt.grid()
+    plt.legend()
+    plt.savefig(f"graphs/{mutation}_vs_fitness.png")
 
 def boltzmann_temperature_variation_with_decreasing():
 
@@ -196,6 +228,35 @@ def boltzmann_temperature_variation():
     plt.tight_layout()
 
     plt.show()
+
+def parents_selection_percentage_variation_graph():
+
+    my_df = df[df["variation"] == "padres"]
+
+    for parents_selection_percentage in my_df["padres"].unique():
+        subset = my_df[my_df["padres"] == parents_selection_percentage]
+
+        plt.plot(
+            subset["generation_number"],
+            subset["max_fitness_value"],
+            label=f"{parents_selection_percentage * 100} %"
+        )
+
+        plt.fill_between(
+            subset["generation_number"],
+            subset["max_fitness_value"] - subset["std_dev_fitness_value"],
+            subset["max_fitness_value"] + subset["std_dev_fitness_value"],
+            alpha=0.2
+        )
+
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness máximo")
+    plt.title("Evolución del fitness según el porcentaje de reproducción")
+    plt.legend(title="Porcentaje de población que se reproduce")
+    plt.grid(True)
+    plt.ylim(bottom=0.55)
+    plt.tight_layout()
+    plt.savefig(f"graphs/parents_selection_percentage_vs_fitness_value.png")
 
 
 def selection_algorithm_variation_graph():
@@ -333,14 +394,18 @@ def tournaments_probabilistic_graph():
     plt.show()
 
 if __name__ == "__main__":
-    #triangles_variation_graph()
-    #fitness_vs_generations()
+    ## triangles_variation_graph()
+    ## fitness_vs_generations()
     #max_fitness_vs_generations()
     #triangles_variation_graph()
     #crossover_variation()
     #boltzmann_temperature_variation()
     #boltzmann_temperature_variation_with_decreasing()
-    selection_algorithm_variation_graph()
+    #selection_algorithm_variation_graph()
     #tournaments_deterministic_graph()
     #tournaments_probabilistic_graph()
  
+    #parents_selection_percentage_variation_graph()
+
+    #mutation_vs_fitness('single')
+    #mutation_vs_fitness('multi')

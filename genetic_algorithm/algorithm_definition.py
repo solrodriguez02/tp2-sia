@@ -8,7 +8,7 @@ import numpy as np
 from .utils.write_data import create_csv
 
 class GeneticAlgorithm:
-    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25):
+    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="single"):
         self.current_generation = [] 
         self.initial_population_size = initial_population_size
         self.best_individual = None
@@ -18,11 +18,12 @@ class GeneticAlgorithm:
         self.generation_number = 0
         self.target_image = target_image
         self.parents_selection_percentage = parents_selection_percentage
+        self.mutation_gens = mutation_gens
     
     def run(self, triangles_per_solution = 50, recombination_probability=1.0, mutation_probability=0.0):
 
         # CAMBIAR CRITERIA_VALUE SEGUN CORRESPONDA Y EL NOMBRE DE LOS ALGORITMOS QUE VARIAN
-        parameters_string = f"CRITERIA_VALUE,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},elite_selection,uniform_crossover,{recombination_probability},Multi,{mutation_probability},Youth_bias"
+        parameters_string = f"MUTATION,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},elite_selection,uniform_crossover,{recombination_probability},{self.mutation_gens},{mutation_probability},Youth_bias"
         data_filename = create_csv()
 
         # generate initial population
@@ -70,8 +71,11 @@ class GeneticAlgorithm:
             #        children.append(new_parents[first_parent])
             #        children.append(new_parents[second_parent])
 
-            mutation_method.mutateSingleGen(children)
-
+            if self.mutation_gens == "single":
+                mutation_method.mutateSingleGen(children)
+            elif self.mutation_gens == "multiple":
+                mutation_method.mutateMultipleGen(children)
+       
             # calculate max fitness value
             for child in children:
                 current_fitness = self.fitness_function(child)
