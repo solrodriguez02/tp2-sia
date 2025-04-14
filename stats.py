@@ -1,4 +1,6 @@
-from matplotlib import pyplot as plt
+import matplotlib 
+matplotlib.use('Agg')  # Use the 'Agg' backend which doesn't require Qt
+import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import numpy as np
@@ -197,6 +199,35 @@ def boltzmann_temperature_variation():
 
     plt.show()
 
+def parents_selection_percentage_variation_graph():
+
+    my_df = df[df["variation"] == "padres"]
+
+    for parents_selection_percentage in my_df["padres"].unique():
+        subset = my_df[my_df["padres"] == parents_selection_percentage]
+
+        plt.plot(
+            subset["generation_number"],
+            subset["max_fitness_value"],
+            label=f"{parents_selection_percentage * 100} %"
+        )
+
+        plt.fill_between(
+            subset["generation_number"],
+            subset["max_fitness_value"] - subset["std_dev_fitness_value"],
+            subset["max_fitness_value"] + subset["std_dev_fitness_value"],
+            alpha=0.2
+        )
+
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness máximo")
+    plt.title("Evolución del fitness según el porcentaje de reproducción")
+    plt.legend(title="Porcentaje de población que se reproduce")
+    plt.grid(True)
+    plt.ylim(bottom=0.55)
+    plt.tight_layout()
+    plt.savefig(f"graphs/parents_selection_percentage_vs_fitness_value.png")
+
 
 if __name__ == "__main__":
     #triangles_variation_graph()
@@ -204,5 +235,5 @@ if __name__ == "__main__":
     #max_fitness_vs_generations()
     #triangles_variation_graph()
     #crossover_variation()
-    boltzmann_temperature_variation()
- 
+    #boltzmann_temperature_variation()
+    parents_selection_percentage_variation_graph()
