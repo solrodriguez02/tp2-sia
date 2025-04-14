@@ -77,9 +77,41 @@ def triangles_variation_graph():
 
     plt.show()
 
+def mutation_vs_fitness(mutation):
+    # mutation: single / multi
+    df_single = df[(df['variation'] == 'MUTATION') & (df['mutation'] == mutation)].copy()
+
+    df_single['generaciones'] = df_single['generaciones'].astype(int)
+    df_single['mean_fitness_value'] = df_single['mean_fitness_value'].astype(float)
+    df_single['std_dev_fitness_value'] = df_single['std_dev_fitness_value'].astype(float)
+    df_single['probability_mutation'] = df_single['probability_mutation'].astype(float)
+
+    df_single = df_single.groupby('probability_mutation')
+
+    plt.figure(figsize=(10, 6))
+
+    for prob, group in df_single:
+        plt.plot(group['mean_fitness_value'].reset_index(drop=True), label=f'{prob} mutación')
+        plt.fill_between(group.index - group.index.min(), 
+                 group['mean_fitness_value'] - group['std_dev_fitness_value'],
+                 group['mean_fitness_value'] + group['std_dev_fitness_value'], alpha=0.2)
+        
+    plt.xlabel('Generaciones')
+    plt.ylabel('Fitness')
+    if mutation == 'single':
+        plt.title('Evolucion del Fitness vs Generaciones variando la probabilidad de mutación (Un solo gen)')
+    else:
+        plt.title('Evolucion del Fitness vs Generaciones variando la probabilidad de mutación (Multiples genes)')
+
+    plt.xticks(rotation=90)
+    plt.grid()
+    plt.legend()
+    plt.savefig(f"graphs/{mutation}_vs_fitness.png")
 
 # main
 if __name__ == "__main__":
-    triangles_variation_graph()
-    fitness_vs_generations()
+    # triangles_variation_graph()
+    # fitness_vs_generations()
     # max_fitness_vs_generations()
+    mutation_vs_fitness('single')
+    mutation_vs_fitness('multi')
