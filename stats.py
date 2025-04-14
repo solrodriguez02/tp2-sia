@@ -198,11 +198,147 @@ def boltzmann_temperature_variation():
     plt.show()
 
 
+def selection_algorithm_variation_graph():
+
+    df = pd.read_csv("data.csv")
+
+    df = df[df["variation"] == "Selection_variation"]
+
+    for selection_algorithm in df["selection_algorithms"].unique():
+        subset = df[df["selection_algorithms"] == selection_algorithm]
+
+        if selection_algorithm == "universal_selection":
+            label = "Universal"
+        elif selection_algorithm == "tournament_selection":
+            label = "Tournament"
+        elif selection_algorithm == "ranking_selection":
+            label = "Ranking"
+        elif selection_algorithm == "boltzmann_selection":
+            label = "Boltzmann"
+        elif selection_algorithm == "elite_selection":
+            label = "Elite"
+        elif selection_algorithm == "roulette_selection":
+            label = "Roulette Wheel"
+
+        plt.plot(
+            subset["generation_number"],
+            subset["max_fitness_value"],
+            label = label
+        )
+
+        plt.fill_between(
+            subset["generation_number"],
+            subset["max_fitness_value"] - subset["std_dev_fitness_value"],
+            subset["max_fitness_value"] + subset["std_dev_fitness_value"],
+            alpha=0.2
+        )
+
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness máximo")
+    plt.title("Evolución del fitness según el algoritmo de selección")
+    plt.legend(title="Algoritmo de Selección")
+    plt.grid(True)
+    plt.ylim(bottom=0.55)
+    plt.tight_layout()
+    plt.show()
+
+
+def tournaments_deterministic_graph():
+    variations = [
+        "Tournaments_Deterministic_M2",
+        "Tournaments_Deterministic_M5",
+        "Tournaments_Deterministic_M10",
+        "Tournaments_Deterministic_M25"
+    ]
+
+    df_filtered = df[df["variation"].isin(variations)]
+
+    plt.figure(figsize=(10, 6))
+
+    for variation in variations:
+        subset = df_filtered[df_filtered["variation"] == variation]
+        
+        if variation == "Tournaments_Deterministic_M2":
+            label = "M = 2"
+        elif variation == "Tournaments_Deterministic_M5":   
+            label = "M = 5"
+        elif variation == "Tournaments_Deterministic_M10":
+            label = "M = 10"
+        elif variation == "Tournaments_Deterministic_M25":
+            label = "M = 25"
+
+        plt.plot(subset["generation_number"], subset["mean_fitness_value"], label=label)
+
+        plt.fill_between(
+            subset["generation_number"],
+            subset["mean_fitness_value"] - subset["std_dev_fitness_value"],
+            subset["mean_fitness_value"] + subset["std_dev_fitness_value"],
+            alpha=0.2
+        )
+
+    plt.title("Impacto de la Variación de M en Torneos Determinísticos")
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness Medio")
+    plt.legend(title="Variación de M")
+    plt.ylim(bottom=0.5)
+    plt.grid(True)
+    plt.tight_layout()
+
+    plt.show()
+
+
+def tournaments_probabilistic_graph():
+    variations = [
+        "Tournaments_Probabilistic_th0.5",
+        "Tournaments_Probabilistic_th0.7",
+        "Tournaments_Probabilistic_th0.9",
+        "Tournaments_Probabilistic_th1",
+    ]
+
+    df_filtered = df[df["variation"].isin(variations)]
+
+    plt.figure(figsize=(10, 6))
+
+    for variation in variations:
+        subset = df_filtered[df_filtered["variation"] == variation]
+        
+        if variation == "Tournaments_Probabilistic_th0.5":
+            label = "Threshold = 0.5"  
+        elif variation == "Tournaments_Probabilistic_th0.7":
+            label = "Threshold = 0.7"
+        elif variation == "Tournaments_Probabilistic_th0.9":
+            label = "Threshold = 0.9"
+        elif variation == "Tournaments_Probabilistic_th1":
+            label = "Threshold = 1"
+
+        plt.plot(subset["generation_number"], subset["mean_fitness_value"], label=label)
+
+        plt.fill_between(
+            subset["generation_number"],
+            subset["mean_fitness_value"] - subset["std_dev_fitness_value"],
+            subset["mean_fitness_value"] + subset["std_dev_fitness_value"],
+            alpha=0.2
+        )
+
+    plt.title("Impacto de la Variación del Threshold en Torneos Probabilísticos")
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness Medio")
+    plt.legend(title="Variación del Threshold")
+    plt.ylim(bottom=0.5)
+    plt.grid(True)
+    plt.tight_layout()
+
+    plt.show()
+
 if __name__ == "__main__":
     #triangles_variation_graph()
     #fitness_vs_generations()
     #max_fitness_vs_generations()
     #triangles_variation_graph()
     #crossover_variation()
-    boltzmann_temperature_variation()
+    #boltzmann_temperature_variation()
+    #boltzmann_temperature_variation_with_decreasing()
+    #selection_algorithm_variation_graph()
+    #tournaments_deterministic_graph()
+    #tournaments_probabilistic_graph()
  
