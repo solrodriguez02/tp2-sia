@@ -155,12 +155,11 @@ def boltzmann_temperature_variation_with_decreasing():
     plt.show()
 
 def boltzmann_temperature_variation():
-    df = pd.read_csv("data.csv")
 
     variations = [
         "BoltzmannTemp_T0.5_variation",
-        "BoltzmannTemp_T5_variation",
-        "BoltzmannTemp_T1.5_variation"
+        "BoltzmannTemp_T10_variation",
+        "BoltzmannTemp_T0.01_variation"
     ]
 
     df_filtered = df[df["variation"].isin(variations)]
@@ -171,11 +170,15 @@ def boltzmann_temperature_variation():
         subset = df_filtered[df_filtered["variation"] == variation]
         
         if variation == "BoltzmannTemp_T0.5_variation":
-            label = "T0 = 0.5"
+            label = "T = 0.5"
         elif variation == "BoltzmannTemp_T5_variation":
-            label = "T0 = 5"
+            label = "T = 5"
         elif variation == "BoltzmannTemp_T1.5_variation":
-            label = "T0 = 1.5"
+            label = "T = 1.5"
+        elif variation == "BoltzmannTemp_T10_variation":
+            label = "T = 10"
+        elif variation == "BoltzmannTemp_T0.01_variation":
+            label = "T = 0.01"
 
         plt.plot(subset["generation_number"], subset["mean_fitness_value"], label=label)
 
@@ -200,8 +203,8 @@ def boltzmann_temperature_variation():
 if __name__ == "__main__":
     #triangles_variation_graph()
     #fitness_vs_generations()
-    # max_fitness_vs_generations()
+    #max_fitness_vs_generations()
     #triangles_variation_graph()
     #crossover_variation()
-    #boltzmann_temperature_variation()
+    boltzmann_temperature_variation()
  
