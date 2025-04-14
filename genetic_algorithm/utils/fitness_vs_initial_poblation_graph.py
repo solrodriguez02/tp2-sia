@@ -55,14 +55,14 @@ for _, config_df in config_groups:
         for key, abbr in relevant_params.items()
     )
 
-    title = f"Average Fitness Evolution - {simplified_name}"
+    title = f"Fitness promedio vs {varying_param}"
     filename = f"plot_{varying_param}_{simplified_name}.png"
 
     plt.title(title)
     plt.xlabel('Generation')
     plt.ylabel('Fitness')
-    plt.legend()
+    plt.legend(loc='lower right')
     plt.grid(True)
-    plt.tight_layout()
+    plt.tight_layout()  # Deja espacio a la derecha
     plt.savefig(filename)
     plt.show()
