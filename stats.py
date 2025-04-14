@@ -31,6 +31,7 @@ def fitness_vs_generations():
     plt.legend()
     plt.savefig(f"graphs/fitness_vs_generations.png")
 
+
 # Max fitness vs generations
 def max_fitness_vs_generations():
     df['generaciones'] = df['generaciones'].astype(int)
@@ -49,8 +50,8 @@ def max_fitness_vs_generations():
     plt.legend()
     plt.savefig(f"graphs/max_fitness_vs_generations.png")
 
+
 def triangles_variation_graph():
-    df = pd.read_csv("data.csv")
 
     df = df[df["variation"] == "Triangles_variation"]
 
@@ -81,7 +82,6 @@ def triangles_variation_graph():
 
 
 def crossover_variation():
-    df = pd.read_csv("data.csv")
 
     df = df[df["variation"] == "Crossover_variation"]
 
@@ -112,8 +112,6 @@ def crossover_variation():
 
 
 def boltzmann_temperature_variation_with_decreasing():
-
-    df = pd.read_csv("data.csv")
 
     variations = [
         "BoltzmannTemp_T00.5_variation",
