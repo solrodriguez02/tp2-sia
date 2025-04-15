@@ -8,14 +8,19 @@ df = pd.read_csv('./data.csv')
 # Detect the varying parameter
 varying_param = df['variation'].iloc[0]
 
+# Define the relevant parameters and their abbreviations
+# (excluding the varying parameter)
 relevant_params = {
-    'triangulos': 'T',
-    'generaciones': 'G',
-    'padres': 'Pd',
-    'mutation': 'M',
-    'crossover': 'C',
-    'crossover_probability': 'Pc',
-    'probability_mutation': 'Pm'
+    'triangulos': 'T=',
+    'generaciones': 'G=',
+    'poblacion_inicial': 'PI=',
+    'padres': 'Pd=',
+    'selection_algorithms': 'SA=',
+    'crossover': 'C=',
+    'crossover_probability': 'Cp=',
+    'mutation': 'M=',
+    'probability_mutation': 'Mp=',
+    #'next_generation_bias': 'NG=',
 }
 
 # Detect fixed parameter combinations
@@ -35,12 +40,16 @@ for _, config_df in config_groups:
     # Group by the varying parameter within this config
     subgroups = config_df.groupby(varying_param)
 
+    #Choose between mean and max fitness value
+    fitness_value = 'max_fitness_value'
+    #fitness_value = 'mean_fitness_value'
+
     for (value, group), in zip(subgroups):
         group = group.sort_values('generation_number')
         group = group[group['generation_number'] > 0]
 
         x = group['generation_number']
-        y_mean = group['mean_fitness_value']
+        y = group[fitness_value]
         y_std = group['std_dev_fitness_value']
 
         # Find the maximum fitness value and the generation it occurred in
@@ -50,8 +59,9 @@ for _, config_df in config_groups:
 
         label = f'{varying_param} = {value} (max = {max_fitness:.4f} gen {gen_max})'
 
-        plt.plot(x, y_mean, label=label, linewidth=2)
-        plt.fill_between(x, y_mean - y_std, y_mean + y_std, alpha=0.2)
+        plt.plot(x, y, label=label, linewidth=2)
+        if fitness_value == 'mean_fitness_value':
+            plt.fill_between(x, y - y_std, y + y_std, alpha=0.2)
 
     param_values = config_df.iloc[0]
     simplified_name = "_".join(
@@ -59,14 +69,14 @@ for _, config_df in config_groups:
         for key, abbr in relevant_params.items()
     )
 
-    title = f"Fitness promedio vs {varying_param}"
+    title = f"Fitness maximo vs {varying_param}"
     filename = f"plot_{varying_param}_{simplified_name}.png"
 
     plt.title(title)
     plt.xlabel('Generation')
     plt.ylabel('Fitness')
-    plt.legend(loc='lower right')
+    plt.legend(loc='center right')
     plt.grid(True)
     plt.tight_layout()  # Deja espacio a la derecha
     plt.savefig(filename)
-    plt.show()
+    #plt.show()

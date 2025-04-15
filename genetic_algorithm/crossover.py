@@ -7,66 +7,52 @@ class Crossover():
     def __init__(self, triangles_amount):
         self.triangles_amount = triangles_amount
 
-    def one_point_crossover(self, new_generation):
+    def one_point_crossover(self, parents):
         childs = []
-        #cross_point = random.randint(1, self.triangles_amount - 1) * 7
-        cross_point = random_generator.randint(0, len(new_generation[0].chromosome) - 1)
+        cross_point = random_generator.randint(0, len(parents[0].chromosome) - 1)
         index = 0
-        generation_shuffled = new_generation.copy()
-        random_generator.shuffle(generation_shuffled)
-        while index < len(new_generation) - 1:
-            p1 = generation_shuffled[index]
-            p2 = generation_shuffled[index + 1]
 
-            if len(p1.chromosome) != len(p2.chromosome):
-                raise ValueError("Los individuos deben tener la misma cantidad de genes")
+        p1,p2 = parents[index], parents[index + 1]
 
-            child1_genes = p1.chromosome[:cross_point] + p2.chromosome[cross_point:]
-            child2_genes = p2.chromosome[:cross_point] + p1.chromosome[cross_point:]
+        if len(p1.chromosome) != len(p2.chromosome):
+            raise ValueError("Los individuos deben tener la misma cantidad de genes")
+        
+        child1_genes = p1.chromosome[:cross_point] + p2.chromosome[cross_point:]
+        child2_genes = p2.chromosome[:cross_point] + p1.chromosome[cross_point:]
 
-            childs.append(build_canvas_from_genes(child1_genes))
-            childs.append(build_canvas_from_genes(child2_genes))
-
-            index += 2
+        childs.append(build_canvas_from_genes(child1_genes))
+        childs.append(build_canvas_from_genes(child2_genes))
 
         return childs
 
-    def uniform_crossover(self,new_generation):
+    def uniform_crossover(self,parents):
         childs = []
         index = 0
-        individuals = len(new_generation)
         change_genes_probability = 0.5
 
-        while index < individuals - 1:
+        first_individual = parents[index]
+        second_individual = parents[index + 1]
         
-            first_individual = new_generation[index]
-            second_individual = new_generation[index + 1]
-
-            if len(first_individual.triangles) != len(second_individual.triangles):
-                raise ValueError("individuals must have the same number of triangles")
-            
-            chromosome_index = 0
-            
-            first_child = []
-            second_child = []
-            
-            while chromosome_index < len(first_individual.chromosome):
-                first_parent = first_individual.chromosome[chromosome_index]
-                second_parent = second_individual.chromosome[chromosome_index]
-
-                if random_generator.random() > change_genes_probability:
-                    first_child.append(first_parent)
-                    second_child.append(second_parent)
-                else:
-                    first_child.append(second_parent)
-                    second_child.append(first_parent)
-
-                chromosome_index += 1
-
-            childs.append(build_canvas_from_genes(first_child))
-            childs.append(build_canvas_from_genes(second_child))
+        if len(first_individual.triangles) != len(second_individual.triangles):
+            raise ValueError("individuals must have the same number of triangles")
         
-            index += 2
+        chromosome_index = 0
+        
+        first_child = []
+        second_child = []
+        
+        while chromosome_index < len(first_individual.chromosome):
+            first_parent = first_individual.chromosome[chromosome_index]
+            second_parent = second_individual.chromosome[chromosome_index]
+            if random_generator.random() > change_genes_probability:
+                first_child.append(first_parent)
+                second_child.append(second_parent)
+            else:
+                first_child.append(second_parent)
+                second_child.append(first_parent)
+            chromosome_index += 1
+        childs.append(build_canvas_from_genes(first_child))
+        childs.append(build_canvas_from_genes(second_child))
 
         return childs
     
