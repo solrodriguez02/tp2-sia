@@ -11,6 +11,7 @@ Los parametros iniciales del algoritmo se definen en el archivo `config.json`.
 - `mutations`: Si muta un solo gen o varios. Puede ser "single" o "multi"
 - `mutation_probability`: Probabilidad de mutacion
 - `rounds`: Cantidad de generaciones a ejecutar
+- `parents_selection_percentage`: Porcentaje de padres que se reproducen 
 
 Se pueden definir varios valores para cada parametro
 
@@ -24,7 +25,8 @@ Ejemplo de archivo de configuracion
     "recombination_probability": [ 1.0 ],
     "mutations": [ "multi" ],
     "mutation_probability": [ 0.2, 0.4, 0.6, 0.8, 1.0 ],
-    "rounds": [ 100 ]
+    "rounds": [ 100 ],
+    "parents_selection_percentage": [ 0.25, 0.5, 0.75, 1.0]
 }
 ```
 
