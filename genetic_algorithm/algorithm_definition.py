@@ -1,5 +1,6 @@
 from genetic_algorithm.utils.create_individuals import create_individuals
 from genetic_algorithm.selection_algorithms.elite_selection import EliteSelection
+from genetic_algorithm.selection_algorithms.ranking_selection import RankingSelection
 from genetic_algorithm.crossover import Crossover
 from genetic_algorithm.mutation import Mutation
 from genetic_algorithm.next_generation import NextGenerationSelection
@@ -8,7 +9,7 @@ import numpy as np
 from .utils.write_data import create_csv
 
 class GeneticAlgorithm:
-    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="single"):
+    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="multiple"):
         self.current_generation = [] 
         self.initial_population_size = initial_population_size
         self.best_individual = None
@@ -29,7 +30,7 @@ class GeneticAlgorithm:
         # generate initial population
         self.current_generation = create_individuals(self.initial_population_size, triangles_per_solution)
         
-        selection_method = EliteSelection(self.parents_selection_percentage*self.initial_population_size)
+        selection_method = RankingSelection(int(self.parents_selection_percentage*self.initial_population_size))
         # set number of parents based on a percentage 
         #selection_method = EliteSelection(Math.floor(0.1 * self.initial_population_size)) 
         #or
@@ -54,27 +55,29 @@ class GeneticAlgorithm:
 
 
             # asumme a recombination probability of 1.0
-            children = crossover_method.uniform_crossover(new_parents)
+            #children = crossover_method.uniform_crossover(new_parents)
 
             # code for stochasticity
-            #children = []
-            #for i in range(len(new_parents)/2):
-            #    first_parent = i * 2 
-            #    second_parent = i * 2 + 1
-            #    random_value = random_generator.random()
-            #    if random_value < recombination_probability:
-            #        current_parents = [new_parents[first_parent], new_parents[second_parent]]
-            #        new_children = crossover_method.one_point_crossover(current_parents)
-            #        for child in new_children:
-            #            children.append(child)
-            #    else:
-            #        children.append(new_parents[first_parent])
-            #        children.append(new_parents[second_parent])
+            children = []
+            parents_shuffled = new_parents.copy()
+            random_generator.shuffle(parents_shuffled)
+            for i in range(int(len(new_parents)/2)):
+                first_parent = i * 2 
+                second_parent = i * 2 + 1
+                random_value = random_generator.random()
+                if random_value < recombination_probability:
+                    current_parents = [parents_shuffled[first_parent], parents_shuffled[second_parent]]
+                    new_children = crossover_method.one_point_crossover(current_parents)
+                    for child in new_children:
+                        children.append(child)
+                else:
+                    children.append(parents_shuffled[first_parent])
+                    children.append(parents_shuffled[second_parent])
 
             if self.mutation_gens == "single":
                 mutation_method.mutateSingleGen(children)
             elif self.mutation_gens == "multiple":
-                mutation_method.mutateMultipleGen(children)
+                mutation_method.mutateMultipleGenes(children)
        
             # calculate max fitness value
             for child in children:
