@@ -14,7 +14,7 @@ import numpy as np
 from .utils.write_data import create_csv
 
 class GeneticAlgorithm:
-    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="single"):
+    def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="multiple"):
         self.current_generation = [] 
         self.initial_population_size = initial_population_size
         self.best_individual = None
