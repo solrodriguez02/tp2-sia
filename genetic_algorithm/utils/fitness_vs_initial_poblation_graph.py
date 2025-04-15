@@ -11,7 +11,11 @@ varying_param = df['variation'].iloc[0]
 relevant_params = {
     'triangulos': 'T',
     'generaciones': 'G',
-    'padres': 'Pd'
+    'padres': 'Pd',
+    'mutation': 'M',
+    'crossover': 'C',
+    'crossover_probability': 'Pc',
+    'probability_mutation': 'Pm'
 }
 
 # Detect fixed parameter combinations

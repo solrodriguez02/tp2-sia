@@ -6,7 +6,7 @@ class NextGenerationSelection:
         self.children = children
 
     def apply_traditional(self, fitness_function):
-        selection_population = self.current_generation.extend(self.children)
+        selection_population = self.current_generation + self.children
         selection_method = EliteSelection(len(self.current_generation))
         new_generation = selection_method.select(selection_population, fitness_function)
         return new_generation

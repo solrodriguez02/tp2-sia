@@ -19,10 +19,10 @@ class GeneticAlgorithm:
         self.target_image = target_image
         self.parents_selection_percentage = parents_selection_percentage
     
-    def run(self, triangles_per_solution = 50, recombination_probability=1.0, mutation_probability=0.0):
+    def run(self, triangles_per_solution = 50, recombination_probability=1.0, mutation_probability=0.0,new_generation_bias="traditional"):
 
         # CAMBIAR CRITERIA_VALUE SEGUN CORRESPONDA Y EL NOMBRE DE LOS ALGORITMOS QUE VARIAN
-        parameters_string = f"CRITERIA_VALUE,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},elite_selection,uniform_crossover,{recombination_probability},Multi,{mutation_probability},Youth_bias"
+        parameters_string = f"next_generation_bais,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},elite_selection,uniform_crossover,{recombination_probability},Multi,{mutation_probability},{new_generation_bias}"
         data_filename = create_csv()
 
         # generate initial population
@@ -80,7 +80,10 @@ class GeneticAlgorithm:
                     self.best_individual = child
             
             next_generation_selection_method = NextGenerationSelection(self.current_generation, children) 
-            self.current_generation = next_generation_selection_method.apply_youth_bias(self.fitness_function)
+            if new_generation_bias == "traditional":
+                self.current_generation = next_generation_selection_method.apply_traditional(self.fitness_function)
+            elif new_generation_bias == "youth_bias":
+                self.current_generation = next_generation_selection_method.apply_youth_bias(self.fitness_function)
             self.generation_number += 1
 
         print(self.max_fitness)
