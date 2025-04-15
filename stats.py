@@ -39,17 +39,22 @@ def max_fitness_vs_generations():
     df['generaciones'] = df['generaciones'].astype(int)
     df['max_fitness_value'] = df['max_fitness_value'].astype(float)
 
+    plt.figure(figsize=(10, 6))
+
     df_gen = df.groupby('generaciones')
     for gen, group in df_gen:
-        plt.plot(group['max_fitness_value'].reset_index(drop=True), label=f'{gen} generaciones')
+        if gen == 400:
+            plt.plot(group['max_fitness_value'].reset_index(drop=True))
+            plt.fill_between(group.index - group.index.min(),
+                     group['max_fitness_value'] - group['std_dev_fitness_value'],
+                     group['max_fitness_value'], alpha=0.2)
     
     plt.xlabel('Generaciones')
     plt.ylabel('Fitness')
-    plt.title('Fitness Maximo vs Generaciones')
+    plt.title('Evolucion del Fitness Maximo vs Generaciones')
     plt.xticks(rotation=90)
     plt.ylim(0.5, 0.9)
     plt.grid()
-    plt.legend()
     plt.savefig(f"graphs/max_fitness_vs_generations.png")
 
 
@@ -396,7 +401,7 @@ def tournaments_probabilistic_graph():
 if __name__ == "__main__":
     ## triangles_variation_graph()
     ## fitness_vs_generations()
-    #max_fitness_vs_generations()
+    max_fitness_vs_generations()
     #triangles_variation_graph()
     #crossover_variation()
     #boltzmann_temperature_variation()
