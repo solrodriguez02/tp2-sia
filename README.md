@@ -11,7 +11,10 @@ Los parametros iniciales del algoritmo se definen en el archivo `config.json`.
 - `mutations`: Si muta un solo gen o varios. Puede ser "single" o "multi"
 - `mutation_probability`: Probabilidad de mutacion
 - `rounds`: Cantidad de generaciones a ejecutar
-- `parents_selection_percentage`: Porcentaje de padres que se reproducen 
+- `parents_selection_percentage`: Porcentaje de padres que se reproducen
+- `new_generation_bias`: Método de creación para la próxima generación. Puede ser "traditional" o "youth_bias"
+- `selection_algorithm`: Método de selección
+- `crossover_algorithm`: Método de cruza
 
 Se pueden definir varios valores para cada parametro
 
@@ -26,7 +29,10 @@ Ejemplo de archivo de configuracion
     "mutations": [ "multi" ],
     "mutation_probability": [ 0.2, 0.4, 0.6, 0.8, 1.0 ],
     "rounds": [ 100 ],
-    "parents_selection_percentage": [ 0.25, 0.5, 0.75, 1.0]
+    "parents_selection_percentage": [ 0.25, 0.5, 0.75, 1.0],
+    "new_generation_bias":["traditional", "youth_bias"],
+    "selection_algorithm": ["ranking"],
+    "crossover_algorithm": ["uniform"]
 }
 ```
 
