@@ -1,13 +1,13 @@
 {
-    "target_image_path": [ "./images/bandera.jpg" ],
+    "target_image_path": [ "./images/image_4.png" ],
     "initial_population_size": [ 100 ],
-    "triangles_per_solution": [ 15 ],
-    "recombination_probability": [ 0.5 ],
+    "triangles_per_solution": [ 20 ],
+    "recombination_probability": [ 1 ],
     "mutations": [ "single" ],
-    "mutation_probability": [ 0.25, 0.5, 0.75, 1.0 ],
-    "rounds": [ 300 ],
-    "parents_selection_percentage": [1.0],
-    "new_generation_bias":["traditional", "youth_bias"],
-    "selection_algorithm": ["ranking"],
-    "crossover_algorithm": ["uniform"]
+    "mutation_probability": [ 1.0 ],
+    "rounds": [ 600 ],
+    "parents_selection_percentage": [ 1.0 ],
+    "new_generation_bias":["traditional"],
+    "selection_algorithm": [ "elite", "roulette", "ranking", "deterministic_tournament", "probabilistic_tournament", "boltzmann", "universal" ],
+    "crossover_algorithm": [ "uniform" ]
 }

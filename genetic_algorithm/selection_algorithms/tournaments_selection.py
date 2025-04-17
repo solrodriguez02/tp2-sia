@@ -10,7 +10,7 @@ class TournamentSelection:
 
     def runDeterministicTournament(self, population, fitness_function):
         best_individuals = []
-        for round in range(self.rounds):
+        for _ in range(self.rounds):
             best_individual = population[0]
             best_score = -1
             for i in range(self.M):
@@ -25,7 +25,7 @@ class TournamentSelection:
 
     def runProbabilisticTournament(self, population, fitness_function):
         best_individuals = []
-        for round in range(self.rounds):
+        for _ in range(self.rounds):
             best_individual = population[0]
             worse_individual = population[0]
 

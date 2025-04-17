@@ -1,6 +1,5 @@
 from genetic_algorithm.utils.create_individuals import random_generator
-from itertools import accumulate
-
+import numpy as np
 class UniversalSelection:
 
     def __init__(self, size):
@@ -8,24 +7,18 @@ class UniversalSelection:
 
     def select(self, population, fitness_function):
 
-        rel_fitness = []
-        for individual in population:
-            rel_fitness.append(fitness_function(individual))
-        
-        sum_fitness = sum(rel_fitness)
-        rel_fitness = [x / sum_fitness for x in rel_fitness]
+        fitness_values = [fitness_function(individual) for individual in population]
+        total_fitness = sum(fitness_values)
+        rel_fitness = [f / total_fitness for f in fitness_values]
 
-        q = list(accumulate(rel_fitness))
+        q = np.cumsum(rel_fitness)
 
         selected_individuals = []
 
         for j in range(self.size):
             r = random_generator.uniform(0, 1)
             r_j = (r + j) / self.size
-            for i, qi in enumerate(q):
-                q_prev = q[i - 1] if i > 0 else 0
-                if q_prev <= r_j < qi:
-                    selected_individuals.append(population[i])
-                    break        
-        
+            index = np.searchsorted(q, r_j)
+            selected_individuals.append(population[index])
+      
         return selected_individuals

@@ -13,6 +13,16 @@ from genetic_algorithm.utils.create_individuals import random_generator
 import numpy as np
 from .utils.write_data import create_csv
 
+SELECTION_METHODS = {
+    "elite": EliteSelection,
+    "roulette": RouletteWheelSelection,
+    "ranking": RankingSelection,
+    "deterministic_tournament": TournamentSelection,
+    "probabilistic_tournament": TournamentSelection,
+    "universal": UniversalSelection,
+    "boltzmann": BoltzmannSelection
+}
+
 class GeneticAlgorithm:
     def __init__(self, fitness_function, target_image, initial_population_size=50, rounds=200, parents_selection_percentage=0.25, mutation_gens="multiple"):
         self.current_generation = [] 
@@ -37,34 +47,30 @@ class GeneticAlgorithm:
 
         size = int(self.parents_selection_percentage*self.initial_population_size)
         
-        if selection_algorithm == "elite":
-            selection_method = EliteSelection(size)
-        elif selection_algorithm == "roulette":
-            selection_method = RouletteWheelSelection(size)
-        elif selection_algorithm == "ranking":
-            selection_method = RankingSelection(size)
-        elif selection_algorithm == "deterministic_tournament" or selection_method == "probabilistic_tournament":
-            m = random_generator.randint(0, self.initial_population_size-1)
-            treshold = random_generator.random()
-            selection_method = TournamentSelection(self.rounds, m, treshold)
-        elif selection_algorithm == "universal":
-            selection_method = UniversalSelection(size)
-        elif selection_algorithm == "boltzmann":
-            selection_method = BoltzmannSelection(size, self.rounds)
+        selection_method_class = SELECTION_METHODS.get(selection_algorithm)
+        if selection_method_class:
+            if selection_algorithm in ["deterministic_tournament", "probabilistic_tournament"]:
+                m = random_generator.randint(0, self.initial_population_size-1)
+                treshold = random_generator.random()
+                selection_method = selection_method_class(self.rounds, m, treshold)
+            else:
+                selection_method = selection_method_class(size)
+        else:
+            raise ValueError(f"Unknown selection algorithm: {selection_algorithm}")
 
         
         # set number of parents based on a percentage 
         #selection_method = EliteSelection(Math.floor(0.1 * self.initial_population_size)) 
         #or
         #selection_method = EliteSelection(Math.floor(0.1 * len(self.current_generation)))         
-        crossover_method = Crossover(triangles_per_solution)
+        crossover_obj = Crossover(triangles_per_solution)
         #asumming a mutation probability of 1.0
         mutation_method = Mutation(mutation_probability, triangles_per_solution)
 
         data_file = open(data_filename, mode='a', newline='')
 
         #pass as parameter 
-        while self.max_fitness < 0.9 and self.generation_number < self.rounds:
+        while self.generation_number < self.rounds:
             print(f"Generation: {self.generation_number}, Max fitness: {self.max_fitness}")
             fitness_values = []
             for individual in self.current_generation:
@@ -88,26 +94,24 @@ class GeneticAlgorithm:
             children = []
             new_parents_shuffled = new_parents.copy()
             random_generator.shuffle(new_parents_shuffled)
+
             for i in range(int(len(new_parents)/2)):
                 first_parent = i * 2 
                 second_parent = i * 2 + 1
                 random_value = random_generator.random()
                 if random_value < recombination_probability:
                     current_parents = [new_parents_shuffled[first_parent], new_parents_shuffled[second_parent]]
-                    if crossover_method == "uniform":
-                        new_children = crossover_method.uniform_crossover(current_parents)
+                    if crossover_method == "uniform_crossover":
+                        new_children = crossover_obj.uniform_crossover(current_parents)
                     else:
-                        new_children = crossover_method.one_point_crossover(current_parents)
+                        new_children = crossover_obj.one_point_crossover(current_parents)
                     for child in new_children:
                         children.append(child)
                 else:
                     children.append(new_parents[first_parent])
                     children.append(new_parents[second_parent])
 
-            if self.mutation_gens == "single":
-                mutation_method.mutateSingleGen(children)
-            elif self.mutation_gens == "multiple":
-                mutation_method.mutateMultipleGenes(children)
+            mutation_method.mutateSingleGen(children) if self.mutation_gens == "single" else mutation_method.mutateMultipleGenes(children)
        
             # calculate max fitness value
             for child in children:
@@ -119,8 +123,9 @@ class GeneticAlgorithm:
             next_generation_selection_method = NextGenerationSelection(self.current_generation, children) 
             if new_generation_bias == "traditional":
                 self.current_generation = next_generation_selection_method.apply_traditional(self.fitness_function)
-            elif new_generation_bias == "youth_bias":
+            else:
                 self.current_generation = next_generation_selection_method.apply_youth_bias(self.fitness_function)
+
             self.generation_number += 1
 
         print(self.max_fitness)

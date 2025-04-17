@@ -14,7 +14,7 @@ def create_individuals(num_individuals, num_triangles, width=500, height=500):
         for _ in range(num_triangles):
             # Genero el triángulo con 3 vértices random y un color random
             vertexes = generate_vertexes(width, height)
-            color = (random_generator.randint(0, 255), random_generator.randint(0, 255), random_generator.randint(0, 255), random_generator.uniform(0, 1))
+            color = generate_random_color()
 
             triangle = Triangle(vertexes, color)
             individual.add_triangle(triangle)
@@ -43,3 +43,9 @@ def generate_vertexes(width, height):
         vertexes.append((x, y))
 
     return vertexes
+
+def generate_random_color():
+    return (random_generator.randint(0, 255), 
+            random_generator.randint(0, 255), 
+            random_generator.randint(0, 255), 
+            random_generator.uniform(0, 1))
