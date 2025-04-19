@@ -11,6 +11,7 @@ from genetic_algorithm.mutation import Mutation
 from genetic_algorithm.next_generation import NextGenerationSelection
 from genetic_algorithm.utils.create_individuals import random_generator
 import numpy as np
+import time
 from .utils.write_data import create_csv
 
 class GeneticAlgorithm:
@@ -62,16 +63,25 @@ class GeneticAlgorithm:
         mutation_method = Mutation(mutation_probability, triangles_per_solution)
 
         data_file = open(data_filename, mode='a', newline='')
+        results = []
 
         #pass as parameter 
-        while self.generation_number < self.rounds:
-            print(f"Generation: {self.generation_number}, Max fitness: {self.max_fitness}")
+        start_time = time.time()
+        while self.generation_number < self.rounds and self.max_fitness < 1.0:
             fitness_values = []
             for individual in self.current_generation:
                 fitness_values.append(self.fitness_function(individual))
-            data_string = f"{self.generation_number},{self.max_fitness},{np.mean(fitness_values)},{np.std(fitness_values)}"
-            data_file.write(f"{parameters_string},{data_string}\n")
 
+            result_string = f"{parameters_string},{self.generation_number},{self.max_fitness},{np.mean(fitness_values)},{np.std(fitness_values)}\n"
+            results.append(result_string)
+            # write results every 100 generations
+            if self.generation_number % 100 == 0:
+                elapsed = time.time() - start_time
+                mins, secs = divmod(int(elapsed), 60)
+                print(f"Generation: {self.generation_number}, Max fitness: {self.max_fitness}, Time: {mins:02d}:{secs:02d}")
+                data_file.writelines(results)
+                results = []
+            
             # select all parents for this generation
             if selection_algorithm == "deterministic_tournament":
                 new_parents = selection_method.runDeterministicTournament(self.current_generation, self.fitness_function)
@@ -80,9 +90,6 @@ class GeneticAlgorithm:
             else:
                 new_parents = selection_method.select(self.current_generation, self.fitness_function)
 
-
-            # asumme a recombination probability of 1.0
-            #children = crossover_method.uniform_crossover(new_parents)
 
             # code for stochasticity
             children = []
@@ -122,6 +129,11 @@ class GeneticAlgorithm:
             elif new_generation_bias == "youth_bias":
                 self.current_generation = next_generation_selection_method.apply_youth_bias(self.fitness_function)
             self.generation_number += 1
+
+        # Write the resting results to the file
+        if len(results) > 0:
+            data_file.writelines(results)
+        data_file.close()
 
         print(self.max_fitness)
         print(self.fitness_function(self.best_individual))
