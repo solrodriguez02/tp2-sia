@@ -65,7 +65,7 @@ class PositionGene(Gene):
 
     def mutate_x(self, percent):
         delta = (self.max_val[0] - self.min_val[0]) * percent
-        self.value = (random_generator.randint(self.value[0] - delta, self.value[0] + delta), self.value[1])
+        self.value = (random_generator.uniform(self.value[0] - delta, self.value[0] + delta), self.value[1])
         if self.value[0] < self.min_val[0]:
             self.value = (self.min_val[0], self.value[1])
         elif self.value[0] > self.max_val[0]:
@@ -73,7 +73,7 @@ class PositionGene(Gene):
 
     def mutate_y(self, percent):
         delta = (self.max_val[1] - self.min_val[1]) * percent
-        self.value = (self.value[0], random_generator.randint(self.value[1] - delta, self.value[1] + delta))
+        self.value = (self.value[0], random_generator.uniform(self.value[1] - delta, self.value[1] + delta))
         if self.value[1] < self.min_val[1]:
             self.value = (self.value[0], self.min_val[1])
         elif self.value[1] > self.max_val[1]:
