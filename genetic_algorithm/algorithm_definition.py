@@ -64,7 +64,7 @@ class GeneticAlgorithm:
         data_file = open(data_filename, mode='a', newline='')
 
         #pass as parameter 
-        while self.max_fitness < 0.9 and self.generation_number < self.rounds:
+        while self.generation_number < self.rounds:
             print(f"Generation: {self.generation_number}, Max fitness: {self.max_fitness}")
             fitness_values = []
             for individual in self.current_generation:
