@@ -10,7 +10,7 @@ class Mutation:
             if change_probability < self.mutation_probability:
                 random_gene_index = random_generator.randint(0, len(individual.chromosome)-1)
                 selected_gene = individual.chromosome[random_gene_index]
-                selected_gene.mutate()
+                selected_gene.mutate(percent=0.2)  # Porcentaje de mutación
                 individual.update_triangle_from_gene(selected_gene, random_gene_index)
 
     def mutateMultipleGenes(self, new_generation):
@@ -23,5 +23,5 @@ class Mutation:
                 for i in range(genes_mutated):
                     random_gene_index = random_generator.randint(0, len(individual.chromosome)-1)
                     selected_gene = individual.chromosome[random_gene_index]
-                    selected_gene.mutate()
+                    selected_gene.mutate(percent=0.2)  # Porcentaje de mutación
                     individual.update_triangle_from_gene(selected_gene, random_gene_index)
