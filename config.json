@@ -1,13 +1,13 @@
 {
-    "target_image_path": [ "./images/image_6.png" ],
+    "target_image_path": [ "./images/duck.jpeg" ],
     "initial_population_size": [ 100 ],
-    "triangles_per_solution": [ 75 ],
+    "triangles_per_solution": [ 25, 50, 75, 100 ],
     "recombination_probability": [ 0.5 ],
     "mutations": [ "single" ],
     "mutation_probability": [ 0.5 ],
     "rounds": [ 1000 ],
     "parents_selection_percentage": [0.5],
     "new_generation_bias":["traditional"],
-    "selection_algorithm": ["elite"],
+    "selection_algorithm": ["elite","ranking"],
     "crossover_algorithm": ["uniform"]
 }
