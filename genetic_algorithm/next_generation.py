@@ -5,15 +5,15 @@ class NextGenerationSelection:
         self.current_generation = current_generation
         self.children = children
 
-    def apply_traditional(self, fitness_function):
+    def apply_traditional(self, fitness_values):
         self.current_generation.extend(self.children)
         selection_method = EliteSelection(len(self.current_generation))
-        new_generation = selection_method.select(self.current_generation, fitness_function)
+        new_generation = selection_method.select(self.current_generation, fitness_values)
         return new_generation
 
-    def apply_youth_bias(self, fitness_function):
+    def apply_youth_bias(self, fitness_values):
         new_generation = self.children
         selection_method = EliteSelection(len(self.current_generation) - len(self.children))
-        selected_parents = selection_method.select(self.current_generation, fitness_function)
+        selected_parents = selection_method.select(self.current_generation, fitness_values)
         new_generation.extend(selected_parents)
         return new_generation

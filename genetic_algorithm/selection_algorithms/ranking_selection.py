@@ -4,11 +4,12 @@ class RankingSelection:
     def __init__(self, size):
         self.size = size
 
-    def select(self, population, fitness_function):
+    def select(self, population, fitness_values_dict):
         fitness_values = []
         sum_aptitudes = 0
         for individual in population:
-            current_aptitude = fitness_function(individual)
+            individual_hash = hash(str(individual))
+            current_aptitude = fitness_values_dict[individual_hash]
             sum_aptitudes += current_aptitude
             fitness_values.append(current_aptitude)
 

@@ -6,11 +6,12 @@ class RouletteWheelSelection:
     def __init__(self, size):
         self.size = size
 
-    def select(self, population, fitness_function):
+    def select(self, population, fitness_values):
 
         rel_fitness = []
         for individual in population:
-            rel_fitness.append(fitness_function(individual))
+            individual_hash = hash(str(individual))
+            rel_fitness.append(fitness_values[individual_hash])
         
         sum_fitness = sum(rel_fitness)
         rel_fitness = [x / sum_fitness for x in rel_fitness]

@@ -4,12 +4,19 @@ class EliteSelection:
     def __init__(self, size):
       self.size = size
 
-    def select(self, population, fitness_function):
+    def select(self, population, fitness_values_dict):
+        #best_individuals = hp.nlargest(
+        #     self.size,
+        #     population,
+        #     key=lambda ind: fitness_values_dict[hash(str(ind))]
+        # )
+
         fitness_priority_queue = []
         counter = 0
         for individual in population:
             counter += 1
-            hp.heappush(fitness_priority_queue, (-fitness_function(individual), counter, individual))
+            individual_hash = hash(str(individual))
+            hp.heappush(fitness_priority_queue, (-fitness_values_dict[individual_hash], counter, individual))
         
         original_queue = fitness_priority_queue.copy()
         best_individuals = []

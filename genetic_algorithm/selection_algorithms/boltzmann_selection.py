@@ -12,7 +12,7 @@ class BoltzmannSelection:
         self.T0 = T0
         self.Tc = 0.01
 
-    def select(self, population, fitness_function, generation_number):
+    def select(self, population, fitness_values_dict, generation_number):
         
         if self.with_decreasing_function:
             temperature = self.temperature_schedule(generation_number)
@@ -20,7 +20,7 @@ class BoltzmannSelection:
             temperature = self.T0
 
         # Pseudo fitness aptitude
-        exp_values = [exp(fitness_function(individual) / temperature) for individual in population]
+        exp_values = [exp(fitness_values_dict[hash(str(individual))] / temperature) for individual in population]
         avg_exp = sum(exp_values) / len(exp_values)
         pseudo_fitnesses = [x / avg_exp for x in exp_values]
 
