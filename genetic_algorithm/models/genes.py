@@ -4,7 +4,7 @@ random_generator = random.Random()
 random_generator.seed(43)
 
 class Gene:
-    def __init__(self, name, value, min_val, max_val, is_float = False):
+    def __init__(self, name, value, min_val, max_val):
         if isinstance(value, int):
             if value < min_val or value > max_val:
                 raise ValueError("invalid value for integer value")
@@ -16,7 +16,6 @@ class Gene:
         self.value = value
         self.min_val = min_val
         self.max_val = max_val
-        self.is_float = is_float
 
     def mutate(self):
         self.value = random_generator.randint(self.min_val, self.max_val)
@@ -35,18 +34,6 @@ class ColorGene(Gene):
     def mutate(self,percent):
         delta = round((self.max_val - self.min_val) * percent * self.COLOR_SENSITIVITY[self.name])
         self.value = random_generator.randint(self.value - delta, self.value + delta)
-        if self.value < self.min_val:
-            self.value = self.min_val
-        elif self.value > self.max_val:
-            self.value = self.max_val
-
-class OpacityGene(Gene):
-    def __init__(self, value):
-        super().__init__("opacity", value, 0, 1, True)
-
-    def mutate(self, percent):
-        delta = (self.max_val - self.min_val) * percent
-        self.value = random_generator.uniform(self.value - delta, self.value + delta)
         if self.value < self.min_val:
             self.value = self.min_val
         elif self.value > self.max_val:

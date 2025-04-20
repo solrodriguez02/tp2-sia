@@ -65,11 +65,10 @@ def build_canvas_from_genes(chromosoma):
         r = chromosoma[index].value
         g = chromosoma[index+1].value
         b = chromosoma[index+2].value
-        a = chromosoma[index+3].value
-        vertex1 = chromosoma[index+4].value
-        vertex2 = chromosoma[index+5].value
-        vertex3 = chromosoma[index+6].value
-        triangle = Triangle([vertex1, vertex2, vertex3], (r, g, b, a))
+        vertex1 = chromosoma[index+3].value
+        vertex2 = chromosoma[index+4].value
+        vertex3 = chromosoma[index+5].value
+        triangle = Triangle([vertex1, vertex2, vertex3], (r, g, b))
         canvas.add_triangle(triangle)
-        index += 7
+        index += 6
     return canvas

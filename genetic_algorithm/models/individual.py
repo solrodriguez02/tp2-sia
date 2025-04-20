@@ -1,9 +1,9 @@
-from .genes import ColorGene, OpacityGene, PositionGene
+from .genes import ColorGene, PositionGene
 
 class Triangle:
     def __init__(self, vertexes, color):
         # vertices: lista de 3 tuplas (x, y)
-        # color: tupla (R, G, B, A)
+        # color: tupla (R, G, B)
         self.vertexes = vertexes
         self.color = color
         self.genes = []
@@ -12,10 +12,10 @@ class Triangle:
     def set_genes(self):
         # Esta implementada la versión 2: hay un gen por cada componente del RGBA y un gen por cada vertice
         colors = ["Red", "Green", "Blue"]
-        for rgb_index in range(len(self.color)-1):
+        for rgb_index in range(3):
             self.genes.append(ColorGene(colors[rgb_index], self.color[rgb_index]))
         
-        self.genes.append(OpacityGene(0.8))
+        #self.genes.append(OpacityGene(0.8))
 
         vertex_names = ["Vertex1", "Vertex2", "Vertex3"]
         
@@ -27,13 +27,13 @@ class Triangle:
         if isinstance(gene, ColorGene):
             match gene.name:
                 case "Red":
-                    self.color = (gene.value, self.color[1], self.color[2], self.color[3])
+                    self.color = (gene.value, self.color[1], self.color[2])
                 case "Green":
-                    self.color = (self.color[0], gene.value, self.color[2], self.color[3])
+                    self.color = (self.color[0], gene.value, self.color[2])
                 case "Blue":
-                    self.color = (self.color[0], self.color[1], gene.value, self.color[3])
-        elif isinstance(gene, OpacityGene):
-            self.color = (self.color[0], self.color[1], self.color[2], gene.value)
+                    self.color = (self.color[0], self.color[1], gene.value)
+        #elif isinstance(gene, OpacityGene):
+        #    self.color = (self.color[0], self.color[1], self.color[2], gene.value)
         elif isinstance(gene, PositionGene):
             match gene.name:
                case "Vertex1": 
@@ -53,6 +53,6 @@ class Canvas:
         self.chromosome.extend(triangle.genes)
 
     def update_triangle_from_gene(self, gene, gene_position):
-        # considering each triangle has 7 genes
-        triangle_index = int(gene_position / 7)
+        # considering each triangle has 6 genes
+        triangle_index = int(gene_position / 6)
         self.triangles[triangle_index].update_from_gene(gene)

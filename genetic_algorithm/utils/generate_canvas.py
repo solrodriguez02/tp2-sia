@@ -9,8 +9,8 @@ def canvas_to_image(canvas, width=500, height=500):
         draw = ImageDraw.Draw(triangle_temp, 'RGBA')    # permite dibujar sobre el template
 
         vertexes = triangle.vertexes
-        r, g, b, a = triangle.color
-        alpha = int(a * 255)
+        r, g, b = triangle.color
+        alpha = int(0.8 * 255)
 
         draw.polygon(vertexes, fill=(r, g, b, alpha))   # dibujo el triángulo en el template
         image = Image.alpha_composite(image, triangle_temp)  # superpongo el triángulo al canvas

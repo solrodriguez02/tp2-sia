@@ -14,7 +14,7 @@ class Mutation:
                 individual.update_triangle_from_gene(selected_gene, random_gene_index)
 
     def mutateMultipleGenes(self, new_generation):
-        M = self.triangles_per_solution*7
+        M = self.triangles_per_solution*6
 
         for individual in new_generation:
             genes_mutated = random_generator.randint(1, M)
