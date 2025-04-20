@@ -15,6 +15,7 @@ import time
 from .utils.write_data import create_csv
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, cpu_count
+import copy
 
 def _calculate_fitness(args):
     individual, fitness_function = args
@@ -60,14 +61,20 @@ class GeneticAlgorithm:
 
     # as processes
     def calculate_population_fitness(self, population):
-        fitness_values = []
+        fitness_values = [None] * len(population)
         uncached_individuals = []
         uncached_indices = []
+        best_fitness_value = 0
+        best_individual = None
 
         for i, individual in enumerate(population):
             individual_hash = hash(str(individual))
             if individual_hash in self.fitness_cache:
-                fitness_values.append(self.fitness_cache[individual_hash])
+                value = self.fitness_cache[individual_hash]
+                fitness_values[i] = value
+                if value > best_fitness_value:
+                    best_fitness_value = value
+                    best_individual = individual
             else:
                 uncached_individuals.append(individual)
                 uncached_indices.append(i)
@@ -78,16 +85,21 @@ class GeneticAlgorithm:
             with Pool(processes=cpu_count()) as pool:
                 uncached_fitness_values = pool.map(_calculate_fitness, args)
 
-            for i, individual in enumerate(uncached_individuals):
+            for i, fitness in enumerate(uncached_fitness_values):
+                idx = uncached_indices[i]
+                individual = uncached_individuals[i]
                 individual_hash = hash(str(individual))
-                self.fitness_cache[individual_hash] = uncached_fitness_values[i]
+            
+                # Store in cache
+                self.fitness_cache[individual_hash] = fitness
+            
+                # Update the results list at the correct position
+                fitness_values[idx] = fitness 
+                if fitness > best_fitness_value:
+                    best_fitness_value = fitness
+                    best_individual = individual
 
-            for original_idx, fitness in zip(uncached_indices, uncached_fitness_values):
-                while len(fitness_values) <= original_idx:
-                    fitness_values.append(None)
-                fitness_values[original_idx] = fitness
-
-        return fitness_values
+        return fitness_values, best_fitness_value, best_individual
 
     def run(self, initial_population, triangles_per_solution = 50, recombination_probability=1.0, mutation_probability=0.0,new_generation_bias="traditional",selection_algorithm="elite",crossover_method="uniform_crossover"):
 
@@ -130,15 +142,14 @@ class GeneticAlgorithm:
 
         #pass as parameter 
         start_time = time.time()
-        while self.generation_number < self.rounds and self.max_fitness < 1.0:
+        while self.generation_number <= self.rounds and self.max_fitness < 1.0:
 
-            fitness_values = self.calculate_population_fitness(self.current_generation)
-            current_max_fitness = max(fitness_values)
+            fitness_values, generation_max_fitness, best= self.calculate_population_fitness(self.current_generation)
 
-            if current_max_fitness > self.max_fitness:
-                self.max_fitness = current_max_fitness
-                max_index = fitness_values.index(current_max_fitness)
-                self.best_individual = self.current_generation[max_index]
+            if generation_max_fitness > self.max_fitness:
+                self.max_fitness = generation_max_fitness 
+                self.best_individual = copy.deepcopy(best)
+                new_max = self.fitness_function(self.best_individual)
 
             result_string = f"{parameters_string},{self.generation_number},{self.max_fitness},{np.mean(fitness_values)},{np.std(fitness_values)}\n"
             results.append(result_string)
