@@ -51,5 +51,5 @@ if __name__ == "__main__":
                                                 best_individual, fitness_value, generation = genetic_algorithm.run(initial_population, triangles, recombination, mutation,new_generation_bias,selection_method,crossover_method)
 
                                                 answer_image = canvas_to_image(best_individual)
-                                                answer_image.save(f"outputs/{img_name}_p{pop_size}_t{triangles}_rec{recombination}_prob_mut{mutation}_r{r}_mut{mutation_gens}_sel{selection_method}_cross{crossover_method}_parents{parents_selection_percentage}_new_gen{new_generation_bias}.png")
+                                                answer_image.save(f"outputs/{img_name}_p{pop_size}_t{triangles}_rec{recombination}_prob_mut{mutation}_r{r}_mut{mutation_gens}_sel{selection_method}_cross{crossover_method}_parents{parents_selection_percentage}_new_gen{new_generation_bias}_fitness{fitness_value}.png")
                                                 print(f"The best result was found on generation {generation} with a fitness value of: {fitness_value}")
