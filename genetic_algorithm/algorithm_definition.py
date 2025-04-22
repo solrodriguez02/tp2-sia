@@ -82,7 +82,7 @@ class GeneticAlgorithm:
         if uncached_individuals:
             args = [(ind, self.fitness_function) for ind in uncached_individuals]
 
-            with Pool(processes=cpu_count()) as pool:
+            with Pool(processes=cpu_count()-1) as pool:
                 uncached_fitness_values = pool.map(_calculate_fitness, args)
 
             for i, fitness in enumerate(uncached_fitness_values):
@@ -104,7 +104,7 @@ class GeneticAlgorithm:
     def run(self, initial_population, triangles_per_solution = 50, recombination_probability=1.0, mutation_probability=0.0,new_generation_bias="traditional",selection_algorithm="elite",crossover_method="uniform_crossover"):
 
         # CAMBIAR CRITERIA_VALUE SEGUN CORRESPONDA Y EL NOMBRE DE LOS ALGORITMOS QUE VARIAN
-        parameters_string = f"next_generation_bias,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},{selection_algorithm},{crossover_method},{recombination_probability},{self.mutation_gens},{mutation_probability},{new_generation_bias}"
+        parameters_string = f"selection,{triangles_per_solution},{self.rounds},{self.initial_population_size},{self.parents_selection_percentage},{selection_algorithm},{crossover_method},{recombination_probability},{self.mutation_gens},{mutation_probability},{new_generation_bias}"
         data_filename = create_csv()
 
         # generate initial population
@@ -122,7 +122,7 @@ class GeneticAlgorithm:
         elif selection_algorithm == "deterministic_tournament" or selection_method == "probabilistic_tournament":
             m = random_generator.randint(0, self.initial_population_size-1)
             treshold = random_generator.random()
-            selection_method = TournamentSelection(self.rounds, m, treshold)
+            selection_method = TournamentSelection(size, m, treshold)
         elif selection_algorithm == "universal":
             selection_method = UniversalSelection(size)
         elif selection_algorithm == "boltzmann":
