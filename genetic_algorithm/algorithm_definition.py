@@ -166,6 +166,8 @@ class GeneticAlgorithm:
                 new_parents = selection_method.runDeterministicTournament(self.current_generation, self.fitness_cache)
             elif selection_algorithm == "probabilistic_tournament":
                 new_parents = selection_method.runProbabilisticTournament(self.current_generation, self.fitness_cache)
+            elif selection_algorithm == "boltzmann":
+                new_parents = selection_method.select(self.current_generation, self.fitness_cache,self.rounds)
             else:
                 new_parents = selection_method.select(self.current_generation, self.fitness_cache)
 
