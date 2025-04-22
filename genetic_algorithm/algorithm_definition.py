@@ -119,7 +119,7 @@ class GeneticAlgorithm:
             selection_method = RouletteWheelSelection(size)
         elif selection_algorithm == "ranking":
             selection_method = RankingSelection(size)
-        elif selection_algorithm == "deterministic_tournament" or selection_method == "probabilistic_tournament":
+        elif selection_algorithm == "deterministic_tournament" or selection_algorithm == "probabilistic_tournament":
             m = random_generator.randint(0, self.initial_population_size-1)
             treshold = random_generator.random()
             selection_method = TournamentSelection(size, m, treshold)
